@@ -12,28 +12,27 @@ window.mtchD={
     minWidth : function(D){
         var exp = ( this.w >= D );
         this.result.minWidth = exp;
-        //return exp;
         return this;
     },
     maxWidth : function(D){
         var exp = ( this.w <= D );
         this.result.maxWidth = exp;
-        //return exp;
         return this;
     },
     minHeight : function(D){
         var exp = ( this.h >= D );
         this.result.minHeight = exp;
-        //return exp;
         return this;
     },
     maxHeight: function(D){
         var exp = ( this.h <= D );
         this.result.maxWidth = exp;
-        //return exp;
         return this;
     },
-
+    // both mtchD.landscape() and mtchD.portrait() provides
+    // data according to one simple factor - comparing viewport height and width
+    // which may be inaccurate on some mobile devices
+    // thus will be updated soon
     landscape: function(){
         
         if( (this.h < this.w) ) {
@@ -59,9 +58,11 @@ window.mtchD={
     },
     
     test: function(){
+        //get instance of this.result
         var r = this.result,
         testedProps = [];
         //flush previous result set
+        //required to run next test
         this.result={};
         
         // Process results and returns T/F
