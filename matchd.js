@@ -4,29 +4,76 @@
 
 
 window.mtchD={
-    result : {
+
+    bool : true,
+    
+    w:0,
+    
+    h:0,
+    
+    setHW: function(){
+        this.w = Math.max(document.documentElement.clientWidth,  window.innerWidth  || 0);
+        this.h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+    },    
         
-    },
-    w:Math.max(document.documentElement.clientWidth,  window.innerWidth  || 0),
-    h:Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
     minWidth : function(D){
-        var exp = ( this.w >= D );
-        this.result.minWidth = exp;
+        this.setHW();
+        
+        if (!this.bool) {
+            return this;
+        }
+        
+        if( this.w >= D ) {
+            this.bool = true;
+        } else {
+            this.bool = false;
+        }
+        
         return this;
     },
     maxWidth : function(D){
-        var exp = ( this.w <= D );
-        this.result.maxWidth = exp;
+        this.setHW();
+        
+        if (!this.bool) {
+            return this;
+        }
+        
+        if ( this.w <= D ) {
+            this.bool = true;
+        } else {
+            this.bool = false;
+        }
+        
         return this;
     },
     minHeight : function(D){
-        var exp = ( this.h >= D );
-        this.result.minHeight = exp;
+        this.setHW();
+        
+        if (!this.bool) {
+            return this;
+        }
+        
+        if( this.h >= D ) {
+            this.bool = true;
+        } else {
+            this.bool = false;
+        }
+
         return this;
     },
     maxHeight: function(D){
-        var exp = ( this.h <= D );
-        this.result.maxWidth = exp;
+        this.setHW();
+        
+        if (!this.bool) {
+            return this;
+        }
+        
+        if ( this.h <= D ) {
+            this.bool = true;
+        } else {
+            this.bool = false;
+        }
+        
         return this;
     },
     // both mtchD.landscape() and mtchD.portrait() provides
@@ -34,43 +81,41 @@ window.mtchD={
     // which may be inaccurate on some mobile devices
     // thus will be updated soon
     landscape: function(){
+        this.setHW();
         
-        if( (this.h < this.w) ) {
-            this.result.orientation = true;
+        if (!this.bool) {
             return this;
+        }
+        
+        if (this.h < this.w)  {
+            this.bool = true;
         } else {
-            this.result.orientation = false;
-            return this;
+            this.bool = false;
         }
         
         return this;
     },
     portrait: function(){
-
-        if ( (this.h > this.w) ) {
-            this.result.orientation = true;
-            return this;
-        } else {
-            this.result.orientation = false
-            return this;
-        }
-       
-    },
-    
-    test: function(){
-        //get instance of this.result
-        var r = this.result,
-        testedProps = [];
-        //flush previous result set
-        //required to run next test
-        this.result={};
+        this.setHW();
         
-        // Process results and returns T/F
-        for( x in r){
-            if (r[x]===false) {
-                return false;
-            }
+        if (!this.bool) {
+            return this;
         }
-        return true;
+        
+        if(this.h > this.w) {
+            this.bool = true;
+        } else {
+            this.bool = false;
+        }
+        
+        return this;        
+    },
+    t : function(){
+        var boolCopy = this.bool;
+        //reset for further use
+        this.bool = true;
+        return boolCopy;
     }
+    
+
 };
