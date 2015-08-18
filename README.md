@@ -2,10 +2,10 @@
 Cross browser Javascript media queries
 
 
-Small library aimed to provide **Javascript media queries** accross all browsers, event those most standard-noncompliant that do not support CSS media queries.
-* No dependancy
-* Lightweight (<=1KB minified) and very fast (no string processing, method names corespondes media queries)
-* Works accross every A and not so A grade browser (even in IE6 and Android 2.1 browser)
+Small library aimed to provide **Javascript media queries** across all browsers, event those most standard-noncompliant that do not support CSS media queries.
+* No dependency
+* Lightweight (<=1KB minified) and very fast (no string processing, method names matches media query structures)
+* Works across every A and not so A grade browser (even in IE6 and Android 2.1 browser)
 * Takes possible window resize or orientation change into count - gives accurate result
 * Simple to write, less chars
 
