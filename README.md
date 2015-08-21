@@ -2,15 +2,18 @@
 Cross browser Javascript media queries
 
 
-Small library aimed to provide **Javascript media queries** across all browsers, event those most standard-noncompliant that do not support CSS media queries.
+Small library aimed to provide **Javascript media queries** across all browsers, event those most noncompliant to standards, that do not support CSS media queries natively.
+
 * No dependency
-* Lightweight (<=1KB minified) and very fast (no string processing, method names matches media query structures)
 * Works across every A and not so A grade browser (even in IE6 and Android 2.1 browser)
-* Takes possible window resize or orientation change into count - gives accurate result
+* Lightweight (~1KB minified)
+* Takes advantage of native matchMedia functionality when available
+* Very fast - doesn't do string processing when native functionality is missing (method names reflects media query structures)
+* Takes possible window resize or orientation change into count - gives accurate result after resize
 * Simple to write, less chars
 
 
-###Usage:
+### Usage:
 
 ```javascript
 
@@ -37,7 +40,7 @@ if ( mtchD.maxHeight(1600).t() ) {
 ```
 
 
-####multiple conditions allowed:
+#### multiple conditions allowed:
 
 ```javascript
 
@@ -48,8 +51,8 @@ if ( mtchD.minWidth(480).maxWidth(1200).t() ) {
 
 ```
 
-#### Basic orientation detection included
 
+#### orientation detection:
 
 ```javascript
 
@@ -58,6 +61,24 @@ if ( mtchD.portrait().minWidth(480).t() ) {
 }
 if ( mtchD.landscape().minWidth(480).t() ) {
   //goes for landscape orientation and min width of 480px
+}
+
+```
+
+#### alternative syntax:
+
+```javascript
+
+if ( mtchD.minWidth(480).maxWidth(1200).t() ) {
+  
+}
+//or
+if ( mtchD.minWidth(480).maxWidth(1200).test() ) {
+  
+}
+//same as
+if ( mtchD.minWidth(480).maxWidth(1200).matches() ) {
+  
 }
 
 ```

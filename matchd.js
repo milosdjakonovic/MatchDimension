@@ -14,100 +14,140 @@ window.mtchD={
     setHW: function(){
         this.w = Math.max(document.documentElement.clientWidth,  window.innerWidth  || 0);
         this.h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
-    },    
-        
+    },
+    
+    testNative : function(){
+        return ('matchMedia' in window) ? true : false;
+    },
     minWidth : function(D){
-        this.setHW();
-        
         if (!this.bool) {
             return this;
-        }
-        
-        if( this.w >= D ) {
-            this.bool = true;
-        } else {
-            this.bool = false;
-        }
-        
-        return this;
-    },
-    maxWidth : function(D){
-        this.setHW();
-        
-        if (!this.bool) {
-            return this;
-        }
-        
-        if ( this.w <= D ) {
-            this.bool = true;
-        } else {
-            this.bool = false;
-        }
-        
-        return this;
-    },
-    minHeight : function(D){
-        this.setHW();
-        
-        if (!this.bool) {
-            return this;
-        }
-        
-        if( this.h >= D ) {
-            this.bool = true;
-        } else {
-            this.bool = false;
         }
 
+        if (this.testNative()) {
+            if (! matchMedia( ['(min-width : ', D, 'px)'].join('') ).matches ) {
+                this.bool = false;
+            }
+        } else {
+            this.setHW();
+
+            if( !(this.w >= D) ) {
+                this.bool = false;
+            }            
+        }
+        
         return this;
     },
+    
+    maxWidth : function(D){
+
+        if (!this.bool) {
+            return this;
+        }
+        
+        if (this.testNative()){
+            if (! matchMedia( ['(max-width : ', D, 'px)'].join('') ).matches ) {
+                this.bool = false;
+            }            
+            
+        } else {
+            this.setHW();
+            
+            if ( !(this.w <= D) ) {
+                this.bool = false;
+            }
+        }
+
+        
+        return this;
+    },
+    
+    minHeight : function(D){
+        
+        if (!this.bool) {
+            return this;
+        }
+        
+        if (this.testNative()) {
+            if (! matchMedia( ['(min-height : ', D, 'px)'].join('') ).matches ) {
+                this.bool = false;
+            }
+        } else {
+            this.setHW();
+            if( !(this.h >= D) ) {
+                this.bool = false;
+            }            
+        }
+        
+        return this;
+    },
+    
     maxHeight: function(D){
-        this.setHW();
         
         if (!this.bool) {
             return this;
         }
         
-        if ( this.h <= D ) {
-            this.bool = true;
+        if (this.testNative()) {
+            if (! matchMedia( ['(max-height : ', D, 'px)'].join('') ).matches ){
+                this.bool = false;
+            }
+            
         } else {
-            this.bool = false;
+            this.setHW();
+            if ( !(this.h <= D) ) {
+                this.bool = false;
+            }            
         }
+        
+
         
         return this;
     },
-    // both mtchD.landscape() and mtchD.portrait() provides
-    // data according to one simple factor - comparing viewport height and width
-    // which may be inaccurate on some mobile devices
-    // thus will be updated soon
+
     landscape: function(){
-        this.setHW();
         
         if (!this.bool) {
             return this;
         }
         
-        if (this.h < this.w)  {
-            this.bool = true;
+        if (this.testNative()) {
+            
+            if (! matchMedia( '(orientation: landscape)' ).matches ){
+                this.bool = false;
+            }
+            
         } else {
-            this.bool = false;
+            
+            this.setHW();
+            if ( !(this.h < this.w) )  {
+                this.bool = false;
+            }
+            
         }
+        
         
         return this;
     },
     portrait: function(){
-        this.setHW();
         
         if (!this.bool) {
             return this;
         }
         
-        if(this.h > this.w) {
-            this.bool = true;
+        if (this.testNative()) {
+            
+            if (! matchMedia( '(orientation: portrait)' ).matches ){
+                this.bool = false;
+            }            
+            
         } else {
-            this.bool = false;
+            this.setHW();            
+            if( !(this.h > this.w)) {
+                this.bool = false;
+            }            
         }
-        
+
         return this;        
     },
     t : function(){
@@ -115,6 +155,14 @@ window.mtchD={
         //reset for further use
         this.bool = true;
         return boolCopy;
+    },
+    
+    test: function(){
+        return this.t()
+    },
+    
+    matches : function(){
+        return this.t()
     }
     
 
