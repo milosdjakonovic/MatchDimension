@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MatchDimension</title>
+
+
+  <style type="text/css">
+	html{
+		width:100%;
+		height:100%;
+		background-color:aliceblue;
+
+		font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+		font-size: 14px;
+		line-height: 1.42857143;
+	}
+
+	div{
+	width: 400px;
+	padding: 9px;
+	background-color:#2A5479;
+	color: #FFF;
+	margin: 50px auto;
+
+	}
+
+	h2{text-align:center}
+
+
+	.final{
+		font-size:22px;
+		text-align:center;
+	}
+  </style>
+  </head>
+  <body>
+
+	<div>
+		<h2>MatchDimension</h2>
+
+		<p>let' me demonstrate you what am I doing. I'm now speaking in behalf of the viewport:</p>
+
+		<ul>
+
+		</ul>
+	</div>
+
+
+    <script>
+
+//MatchDimension
+//Cross browser Javascript media queries
+//by Milos Djakonovic ( @Miloshio )
+window.mtchD=(function(w){
+    var t=true,
+        w,
+        h,
+        native = ( function(){ return ('matchMedia' in window) ? true : false } )();
+
+    function setHW(){
+        w = Math.max(document.documentElement.clientWidth,  w.innerWidth  || 0);
+        h = Math.max(document.documentElement.clientHeight, w.innerHeight || 0)
+    }
+
+    setHW();
+
+
+    function test(){
+        setHW();
+        var ul = document.getElementsByTagName('ul')[0];
+        var newli = document.createElement('li');
+        newli.innerHTML='I \'ve got ' + w  + 'width!';
+        ul.appendChild( newli )
+    }
+
+    function aEv(e, v, f) {
+        if (e.addEventListener) {
+            e.addEventListener(v, f, false);
+        } else if (e.attachEvent) {
+            e.attachEvent('on' + v, f);
+        }
+    }
+    aEv(window,'resize', test)
+
+    return {
+        matches: function(){
+            var b = t;
+            t=true;
+            return b;
+        },
+        minWidth : function(D){
+            if (!t) {
+                return this;
+            }
+
+            if (native) {
+                if (! matchMedia( ['(min-width : ', D, 'px)'].join('') ).matches ) {
+                    t = false;
+                }
+            } else {
+
+                if( !(w >= D) ) {
+                    t = false;
+                }
+            }
+
+            return this;
+        }
+
+    }
+
+})(window);
+
+
+
+    </script>
+    <script>
+//		var ul = document.getElementsByTagName('ul')[0],
+//
+//		sizes = [480,640,768,960,1024,1140,1280,1600,1920];
+//
+//		for(var i =0; i<sizes.length;i++){
+//
+//			if( mtchD.minWidth(sizes[i]).matches ){
+//				var newli = document.createElement('li');
+//				newli.innerHTML='I \'ve got ' + sizes[i]  + 'px or more width!';
+//				ul.appendChild( newli )
+//			}
+//
+//
+//		}
+//
+//		var line = document.createElement('li');
+//		line.style.listStyleType='none';
+//		line.innerHTML = ' ---------------------------- ';
+//		ul.appendChild( line );
+
+
+//		for(var i =0; i<sizes.length;i++){
+//
+//			if( mtchD.maxWidth(sizes[i]).t() ){
+//				var newli = document.createElement('li');
+//				newli.innerHTML='I \'ve got ' + sizes[i]  + 'px or less width!';
+//				ul.appendChild( newli )
+//			}
+//
+//
+//		}
+//
+//
+//		var line = document.createElement('li');
+//		line.style.listStyleType='none';
+//		line.innerHTML = ' ---------------------------- ';
+//		ul.appendChild( line );
+//
+//		if(mtchD.landscape().t()){
+//				var newli = document.createElement('li');
+//				newli.innerHTML='In terms of device orientation \'m <strong>landscape</strong>!';
+//				ul.appendChild( newli )
+//		} else {
+//				var newli = document.createElement('li');
+//				newli.innerHTML='In terms of device orientation \'m <strong>portrait</strong>!';
+//				ul.appendChild( newli )
+//		}
+
+
+		var p = document.createElement('p');
+		p.className = 'final';
+		p.innerHTML = ' did I tell you that I do work in IE6+ and all non-compliant browsers?';
+		document.getElementsByTagName('div')[0].appendChild( p );
+
+
+		var p = document.createElement('p');
+		p.innerHTML = 'Exactly that. You can use me instead of <strong>Window.matchMedia()</strong> without thinking about whether I\'m gonna work or not.';
+		document.getElementsByTagName('div')[0].appendChild( p );
+
+
+
+	</script>
+  </body>
+</html>
