@@ -56,26 +56,38 @@
 //by Milos Djakonovic ( @Miloshio )
 window.mtchD=(function(w){
     var t=true,
-        w,
-        h,
-        native = ( function(){ return ('matchMedia' in window) ? true : false } )();
+        W,//width
+        H,//height
+        tout,//timeout
+        //do we have native functionality?
+        native = ( function(){ return ('matchMedia' in w) ? true : false } )(),
 
+        fnPoll=[
+            {condition:'', fn: function(){}}
+        ],
+        q = [];//queue
+
+
+
+    //set width and height
     function setHW(){
-        w = Math.max(document.documentElement.clientWidth,  w.innerWidth  || 0);
-        h = Math.max(document.documentElement.clientHeight, w.innerHeight || 0)
+        W = Math.max(document.documentElement.clientWidth,  w.innerWidth  || 0);
+        H = Math.max(document.documentElement.clientHeight, w.innerHeight || 0);
     }
 
-    setHW();
 
-
-    function test(){
+    //debounced fn, to be called from on resize handler
+    function dbncd(){
         setHW();
-        var ul = document.getElementsByTagName('ul')[0];
-        var newli = document.createElement('li');
-        newli.innerHTML='I \'ve got ' + w  + 'width!';
-        ul.appendChild( newli )
-    }
 
+    }
+    // on resize, debouncer..
+    function onrsz(){
+        //console.log('w')
+        clearTimeout(tout);
+        tout=setTimeout(dbncd,100);
+    }
+    // addEvent
     function aEv(e, v, f) {
         if (e.addEventListener) {
             e.addEventListener(v, f, false);
@@ -83,15 +95,38 @@ window.mtchD=(function(w){
             e.attachEvent('on' + v, f);
         }
     }
-    aEv(window,'resize', test)
+
+    function mw(){
+
+    }
+
+    function mxw(){
+
+    }
+
+    function mh(){
+
+    }
+
+    function mxh(){
+
+    }
+
+    setHW();
+    aEv(w,'resize', onrsz);
+    aEv(w,'orientationchange',onrsz);
 
     return {
         matches: function(){
             var b = t;
-            t=true;
+            t=true;//set tester to initial value
+            q = [];//empty queue
             return b;
         },
+
         minWidth : function(D){
+
+            q.push( { t: 'minWidth', v: D} );
             if (!t) {
                 return this;
             }
@@ -102,19 +137,156 @@ window.mtchD=(function(w){
                 }
             } else {
 
-                if( !(w >= D) ) {
+                if( !(W >= D) ) {
                     t = false;
                 }
             }
 
             return this;
+        },
+
+        maxWidth : function(D){
+            q.push( { t: 'maxWidth', v: D} );
+            if (!t) {
+                return this;
+            }
+
+            if (native){
+                if (! matchMedia( ['(max-width : ', D, 'px)'].join('') ).matches ) {
+                    t = false;
+                }
+
+            } else {
+
+                if ( !(W <= D) ) {
+                    t = false;
+                }
+            }
+
+
+            return this;
+        },
+        minHeight : function(D){
+            q.push( { t: 'minHeight', v: D} );
+            if (!t) {
+                return this;
+            }
+
+            if (native) {
+                if (! matchMedia( ['(min-height : ', D, 'px)'].join('') ).matches ) {
+                    t = false;
+                }
+            } else {
+
+                if( !(H >= D) ) {
+                    t = false;
+                }
+            }
+
+            return this;
+        },
+        maxHeight: function(D){
+            q.push( { t: 'maxHeight', v: D} );
+            if (!t) {
+                return this;
+            }
+
+            if (native) {
+                if (! matchMedia( ['(max-height : ', D, 'px)'].join('') ).matches ){
+                    t = false;
+                }
+
+            } else {
+                if ( !(H <= D) ) {
+                    t = false;
+                }
+            }
+
+
+
+            return this;
+        },
+        landscape: function(){
+            q.push( { t: 'landscape' } );
+            if (!t) {
+                return this;
+            }
+
+            if (native) {
+
+                if (! matchMedia( '(orientation: landscape)' ).matches ){
+                    t = false;
+                }
+
+            } else {
+
+                if ( !(H < W) )  {
+                    t = false;
+                }
+
+            }
+
+
+            return this;
+        },
+        portrait: function(){
+            q.push( { t: 'portrait'} );
+            if (!t) {
+                return this;
+            }
+
+            if (native) {
+
+                if (! matchMedia( '(orientation: portrait)' ).matches ){
+                    t = false;
+                }
+
+            } else {
+                if( !(H > W)) {
+                    t = false;
+                }
+            }
+
+            return this;
+        },
+        test: function(){
+            return this.matches()
+        },
+
+        t : function(){
+            return this.matches()
+        },
+
+        listen: function(fn){
+            var Q=q;//creating copy of q which is going to be emptied
+            if(this.matches()){
+                //if condition matches, we will call function once
+                fn.call();
+            } else {
+                // if not, we will poll that function for eventual execution
+                // fnPoll
+                var l = Q.length,
+                    f = true;
+                for(var i=0;i<l;i++){
+                    if(Q[i]['t']!=='landscape' && Q[i]['t']!=='portrait'){
+                        console.log( Q[i]['t'] + ' : ' + Q[i]['v']   )
+                        //console.log( Q[i]['t'] + ' Je: ' + typeof( this[Q[i]['t']]) )
+                        //moras sve testove da odradis...
+                        //[Q[i]['t']]( Q[i]['v'] );
+                    }
+
+                }
+                //fnPoll.push({  })
+            }
         }
+
+
 
     }
 
 })(window);
-
-
+//mtchD.maxWidth(960).listen(function(){ console.log('sad postah max 960px! Ha') })
+//mtchD.maxWidth(960).remove(functionname)
 
     </script>
     <script>
@@ -124,7 +296,7 @@ window.mtchD=(function(w){
 //
 //		for(var i =0; i<sizes.length;i++){
 //
-//			if( mtchD.minWidth(sizes[i]).matches ){
+//			if( mtchD.minWidth(sizes[i]).t() ){
 //				var newli = document.createElement('li');
 //				newli.innerHTML='I \'ve got ' + sizes[i]  + 'px or more width!';
 //				ul.appendChild( newli )
@@ -137,8 +309,8 @@ window.mtchD=(function(w){
 //		line.style.listStyleType='none';
 //		line.innerHTML = ' ---------------------------- ';
 //		ul.appendChild( line );
-
-
+//
+//
 //		for(var i =0; i<sizes.length;i++){
 //
 //			if( mtchD.maxWidth(sizes[i]).t() ){
@@ -165,18 +337,18 @@ window.mtchD=(function(w){
 //				newli.innerHTML='In terms of device orientation \'m <strong>portrait</strong>!';
 //				ul.appendChild( newli )
 //		}
-
-
-		var p = document.createElement('p');
-		p.className = 'final';
-		p.innerHTML = ' did I tell you that I do work in IE6+ and all non-compliant browsers?';
-		document.getElementsByTagName('div')[0].appendChild( p );
-
-
-		var p = document.createElement('p');
-		p.innerHTML = 'Exactly that. You can use me instead of <strong>Window.matchMedia()</strong> without thinking about whether I\'m gonna work or not.';
-		document.getElementsByTagName('div')[0].appendChild( p );
-
+//
+//
+//		var p = document.createElement('p');
+//		p.className = 'final';
+//		p.innerHTML = ' did I tell you that I do work in IE6+ and all non-compliant browsers?';
+//		document.getElementsByTagName('div')[0].appendChild( p );
+//
+//
+//		var p = document.createElement('p');
+//		p.innerHTML = 'Exactly that. You can use me instead of <strong>Window.matchMedia()</strong> without thinking about whether I\'m gonna work or not.';
+//		document.getElementsByTagName('div')[0].appendChild( p );
+//
 
 
 	</script>
