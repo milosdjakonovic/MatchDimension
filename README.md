@@ -1,29 +1,34 @@
 # MatchDimension
-Cross browser Javascript media queries
+Cross browser Javascript viewport awareness
 
 
-Small library aimed to provide **Javascript media queries** across all browsers, event those most noncompliant to standards, that do not support CSS media queries natively.
+Small library aimed to provide **Javascript viewport awareness** across all browsers, event those noncompliant to standards, that do not support CSS media queries natively.
 
 * No dependency
 * Works across every A and not so A grade browser (even in IE6 and Android 2.1 browser)
-* Lightweight (~1KB minified)
+* Lightweight and very fast (~1.7KB minified)
 * Takes advantage of native matchMedia functionality when available
-* Very fast - doesn't do string processing when native functionality is missing (method names reflects media query structures)
-* Takes possible window resize or orientation change into count - gives accurate result after resize
+* Takes possible window resize or orientation change into count
+* Option to **listen for viewport changes** - bind functions on `resize` and `orientationchange` events - like matchMedia.addListener
 * Simple to write, less chars
 
 
+
+Limitation: 
+* only pixel units allowed
+
+ 
 ### Usage:
 
 ```javascript
 
-if ( mtchD.minWidth(480).t() ) {
+if ( mtchD( 'min-width', '480px') ) {
   // code for viewport width => 480px
-  //equivalent for @media(min-width:480px)
+  // equivalent for @media(min-width:480px)
 }
-if ( mtchD.maxWidth(1600).t() ) {
+if ( mtchD({'max-width' : '1600px' }) ) {
   // code for viewport width <= 1600px
-  //equivalent for @media(max-width:1600px)
+  // equivalent for @media(max-width:1600px)
 }
 
 if ( mtchD.minHeight(480).t() ) {
@@ -31,9 +36,9 @@ if ( mtchD.minHeight(480).t() ) {
   //equivalent for @media(min-height:480px)
 }
 
-if ( mtchD.maxHeight(1600).t() ) {
+if ( mtchD.('max-hight', '1600px') ) {
   // code for viewport height <= 1600px
-  //equivalent for @media(max-height:1600px)
+  // equivalent for @media(max-height:1600px)
 }
 
 
@@ -44,8 +49,8 @@ if ( mtchD.maxHeight(1600).t() ) {
 
 ```javascript
 
-if ( mtchD.minWidth(480).maxWidth(1200).t() ) {
-  //equivalent for @media (min-width:480px) and (max-width: 1200px)
+if ( mtchD({ 'min-width':'480px', 'max-width':'1200px' }) ) {
+  // equivalent for @media (min-width:480px) and (max-width: 1200px)
 }
 
 
@@ -56,29 +61,28 @@ if ( mtchD.minWidth(480).maxWidth(1200).t() ) {
 
 ```javascript
 
-if ( mtchD.portrait().minWidth(480).t() ) {
-  //goes for portrait orientation and min width of 480px
+if ( mtchD({ 'min-width':'480px', 'orientation':'portrait' })  ) {
+  // goes for portrait orientation and min width of 480px
 }
-if ( mtchD.landscape().minWidth(480).t() ) {
-  //goes for landscape orientation and min width of 480px
+if ( mtchD({ 'orientation':'landscape', 'min-width':'480px' }) ) {
+  // goes for landscape orientation and min width of 480px
 }
 
 ```
 
-#### alternative syntax:
+#### listener
 
 ```javascript
 
-if ( mtchD.minWidth(480).maxWidth(1200).t() ) {
-  
-}
-//or
-if ( mtchD.minWidth(480).maxWidth(1200).test() ) {
-  
-}
-//same as
-if ( mtchD.minWidth(480).maxWidth(1200).matches() ) {
-  
-}
+mtchD.on({'max-width' : '800px' }, function(){
+    // will execute immediately if condition is true
+    // and every time when condition becames true, for example, when device changes orientation multiple times
+});
+
+mtchD.on({'max-width' : '800px' }, function(){
+    // will execute immediately if condition is true
+    // and once when condition becames true - note the last argument
+}, true);
+
 
 ```
