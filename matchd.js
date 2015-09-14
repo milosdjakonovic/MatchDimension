@@ -1,7 +1,7 @@
 //MatchDimension
 //Cross browser Javascript media queries
 //by Milos Djakonovic ( @Miloshio )
-window.mtchD = (function(w,m){
+window.mtchD = (function(w){
 
 
 
@@ -138,7 +138,7 @@ window.mtchD = (function(w,m){
     function executeTest(test,param){
         if(test!=='orientation'){
             test = test.replace('-width','Width').replace('-height','Height');
-            param = Number(param.replace('px',''));
+            param = Number(param);
         }
 
         var result;
@@ -208,8 +208,6 @@ window.mtchD = (function(w,m){
                 callback : callback,
                 once: once
             });
-            
-
 
         }
     }

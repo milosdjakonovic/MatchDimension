@@ -57,7 +57,7 @@
 
 		for(var i =0; i<sizes.length;i++){
 
-			if( mtchD( 'min-width' , sizes[i] + 'px' ) ){
+			if( mtchD( 'min-width' , sizes[i]) ){
 				var newli = document.createElement('li');
 				newli.innerHTML='I \'ve got ' + sizes[i]  + 'px or more width!';
 				ul.appendChild( newli )
@@ -74,7 +74,7 @@
 
 		for(var i =0; i<sizes.length;i++){
 
-			if(  mtchD({ 'max-width': sizes[i] + 'px'  }) ){
+			if(  mtchD({ 'max-width': sizes[i] }) ){
 				var newli = document.createElement('li');
 				newli.innerHTML='I \'ve got ' + sizes[i]  + 'px or less width!';
 				ul.appendChild( newli )

@@ -25,21 +25,21 @@ Simply include library in your code `<script src="path/to/js/matchd.min.js"></sc
 
 ```javascript
 
-if ( mtchD( 'min-width', '480px') ) {
+if ( mtchD( 'min-width', 480) ) {
   // code for viewport width => 480px
   // equivalent for @media(min-width:480px)
 }
-if ( mtchD({'max-width' : '1600px' }) ) {
+if ( mtchD({'max-width' : 1600 }) ) {
   // code for viewport width <= 1600px
   // equivalent for @media(max-width:1600px)
 }
 
-if ( mtchD({ 'min-height':  '480px'}) ) {
+if ( mtchD({ 'min-height' : 480}) ) {
   // code for viewport height => 480px
   //equivalent for @media(min-height:480px)
 }
 
-if ( mtchD.('max-hight', '1600px') ) {
+if ( mtchD.('max-hight', 1600) ) {
   // code for viewport height <= 1600px
   // equivalent for @media(max-height:1600px)
 }
@@ -52,7 +52,7 @@ if ( mtchD.('max-hight', '1600px') ) {
 
 ```javascript
 
-if ( mtchD({ 'min-width':'480px', 'max-width':'1200px' }) ) {
+if ( mtchD({ 'min-width' : 480, 'max-width':1200 }) ) {
   // equivalent for @media (min-width:480px) and (max-width: 1200px)
 }
 
@@ -64,10 +64,10 @@ if ( mtchD({ 'min-width':'480px', 'max-width':'1200px' }) ) {
 
 ```javascript
 
-if ( mtchD({ 'min-width':'480px', 'orientation':'portrait' })  ) {
+if ( mtchD({ 'min-width':480, 'orientation':'portrait' })  ) {
   // goes for portrait orientation and min width of 480px
 }
-if ( mtchD({ 'orientation':'landscape', 'min-width':'480px' }) ) {
+if ( mtchD({ 'orientation':'landscape', 'min-width':480 }) ) {
   // goes for landscape orientation and min width of 480px
 }
 
@@ -77,12 +77,12 @@ if ( mtchD({ 'orientation':'landscape', 'min-width':'480px' }) ) {
 
 ```javascript
 
-mtchD.on({'max-width' : '800px' }, function(){
+mtchD.on({'max-width' : 800 }, function(){
     // will execute immediately if condition is true
     // and every time when condition becames true, for example, when device changes orientation multiple times
 });
 
-mtchD.on({'max-width' : '800px' }, function(){
+mtchD.on({'max-width' : 800 }, function(){
     // will execute immediately if condition is true
     // and once when condition becames true - note the last argument
 }, true);
