@@ -9,7 +9,7 @@ Small library aimed to provide **Javascript viewport awareness** across all brow
 * Lightweight and very fast (~1.7KB minified)
 * Takes advantage of native matchMedia functionality when available
 * Takes possible window resize or orientation change into count
-* Option to **listen for viewport changes** - bind functions on `resize` and `orientationchange` events - like matchMedia.addListener
+* Option to **listen for viewport changes** - bind functions on `resize` and `orientationchange` events - like `matchMedia.addListener`
 * Simple to write, less chars
 
 
@@ -19,6 +19,9 @@ Limitation:
 
  
 ### Usage:
+
+Simply include library in your code `<script src="path/to/js/matchd.min.js"></script>`
+
 
 ```javascript
 
@@ -31,7 +34,7 @@ if ( mtchD({'max-width' : '1600px' }) ) {
   // equivalent for @media(max-width:1600px)
 }
 
-if ( mtchD.minHeight(480).t() ) {
+if ( mtchD({ 'min-height':  '480px'}) ) {
   // code for viewport height => 480px
   //equivalent for @media(min-height:480px)
 }
